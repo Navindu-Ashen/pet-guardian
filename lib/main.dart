@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pet_guardian/screens/authentication/login.dart';
+import 'package:pet_guardian/screens/bottom_nav_bar.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      home: const BottomNavigationScaffold(),
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pet_guardian/widgets/categories_list.dart';
+import 'package:pet_guardian/widgets/home_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -68,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
+                        // ignore: deprecated_member_use
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 1,
                         blurRadius: 10,
@@ -130,67 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        ClipOval(
-                          child: Image.asset(
-                            "assets/images.jpeg",
-                            width: 70,
-                            height: 70,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text("Shop"),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        ClipOval(
-                          child: Image.asset(
-                            "assets/images.jpeg",
-                            width: 70,
-                            height: 70,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text("Articles"),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        ClipOval(
-                          child: Image.asset(
-                            "assets/images.jpeg",
-                            width: 70,
-                            height: 70,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text("Dog Breeds"),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        ClipOval(
-                          child: Image.asset(
-                            "assets/images.jpeg",
-                            width: 70,
-                            height: 70,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text("Training"),
-                      ],
-                    ),
-                  ],
-                ),
+                CategoriesList(),
                 SizedBox(height: 32),
                 Text(
                   "Events",
@@ -199,6 +142,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+                SizedBox(height: 16),
+                HomeCard(
+                    title: 'Find and Join Special Events For Your Pets',
+                    image: 'assets/images.jpeg',
+                    onPressed: () {}),
+                SizedBox(height: 32),
+                Text(
+                  "Community",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 16),
+                HomeCard(
+                    title: 'Connect and Share with Communities',
+                    image: 'assets/images.jpeg',
+                    onPressed: () {}),
               ],
             ),
           ),
