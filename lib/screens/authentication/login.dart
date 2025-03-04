@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_guardian/screens/authentication/registration.dart';
+import 'package:pet_guardian/screens/home/home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -151,6 +152,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           print('Email: ${_emailController.text}');
                           print('Password: ${_passwordController.text}');
                         }
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => HomeScreen(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
