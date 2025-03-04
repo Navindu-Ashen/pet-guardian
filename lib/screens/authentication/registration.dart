@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pet_guardian/provider/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -62,40 +64,84 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       spacing: 16,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          width: screenSize.width * 0.4,
-                          height: screenSize.width * 0.4,
-                          child: Stack(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Color.fromARGB(255, 245, 146, 69),
-                                    width: 5,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                right: 0,
-                                top: screenSize.width / 2 - 90,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Color.fromARGB(255, 245, 146, 69),
-                                  ),
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.add_a_photo_outlined,
-                                      size: 26,
-                                      color: Colors.white,
+                        Stack(
+                          children: [
+                            Align(
+                                alignment: Alignment.topCenter,
+                                child: SizedBox(
+                                  child: CircleAvatar(
+                                    radius: 84,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 245, 146, 69),
+                                    child: CircleAvatar(
+                                      radius: 78.0,
+                                      backgroundImage: context
+                                                  .watch<UserProvider>()
+                                                  .profileImage ==
+                                              null
+                                          ? const AssetImage(
+                                              'assets/logo_bg.png')
+                                          : Image.file(context
+                                                  .watch<UserProvider>()
+                                                  .profileImage!)
+                                              .image,
+                                      child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: GestureDetector(
+                                            onTap: () {},
+                                            child: context
+                                                        .watch<UserProvider>()
+                                                        .profileImage ==
+                                                    null
+                                                ? IconButton(
+                                                    onPressed: () {
+                                                      context
+                                                          .read<UserProvider>()
+                                                          .captureImage();
+                                                    },
+                                                    icon: const Icon(Icons
+                                                        .add_a_photo_rounded),
+                                                    iconSize: 30,
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10),
+                                                    color: Colors.white,
+                                                    style: ButtonStyle(
+                                                      backgroundColor:
+                                                          WidgetStateProperty
+                                                              .all<Color>(
+                                                        Color.fromARGB(
+                                                            255, 245, 146, 69),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : IconButton(
+                                                    onPressed: () {
+                                                      context
+                                                          .read<UserProvider>()
+                                                          .clearImage();
+                                                    },
+                                                    icon: const Icon(
+                                                        Icons.cancel_outlined),
+                                                    iconSize: 30,
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10),
+                                                    color: Colors.white,
+                                                    style: ButtonStyle(
+                                                      backgroundColor:
+                                                          WidgetStateProperty
+                                                              .all<Color>(
+                                                        Color.fromARGB(
+                                                            255, 245, 146, 69),
+                                                      ),
+                                                    ),
+                                                  )),
+                                      ),
                                     ),
-                                    onPressed: () {},
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
+                                )),
+                          ],
                         ),
                         TextFormField(
                           controller: _emailController,
