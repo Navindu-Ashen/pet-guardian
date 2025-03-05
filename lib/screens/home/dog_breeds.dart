@@ -20,16 +20,16 @@ class _DogBreedsState extends State<DogBreeds> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 245, 146, 69),
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 245, 146, 69),
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(5),
+                ),
                 child: const Icon(
                   Icons.arrow_back_ios,
                   color: Colors.white,

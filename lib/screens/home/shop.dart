@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pet_guardian/data/shop_items.dart';
+import 'package:pet_guardian/models/shop_items.dart';
+import 'package:pet_guardian/screens/home/cart_screen.dart';
+import 'package:pet_guardian/screens/home/shop_item_detail.dart';
+import 'package:pet_guardian/screens/options/sort_option.dart';
+import 'package:pet_guardian/widgets/dog_spa_banner.dart';
+import 'package:pet_guardian/widgets/shop_item_card.dart';
 
 class Shop extends StatefulWidget {
   const Shop({super.key});
@@ -8,6 +15,18 @@ class Shop extends StatefulWidget {
 }
 
 class _ShopState extends State<Shop> {
+  String searchQuery = '';
+  SortOption currentSort = SortOption.nameAZ;
+
+  List<ShopItem> get filteredItems {
+    var items = shopItemsList
+        .where((item) =>
+            item.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
+            item.description.toLowerCase().contains(searchQuery.toLowerCase()))
+        .toList();
+    return sortItems(items, currentSort); // Use sort function
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -19,10 +38,21 @@ class _ShopState extends State<Shop> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-                size: 20,
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 245, 146, 69),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: const Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
               ),
               const Text(
                 "Pet Shop",
@@ -32,10 +62,22 @@ class _ShopState extends State<Shop> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const Icon(
-                Icons.shopping_cart_checkout,
-                color: Color.fromARGB(255, 245, 146, 69),
-                size: 30,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const CartScreen();
+                      },
+                    ),
+                  );
+                },
+                child: const Icon(
+                  Icons.shopping_cart_checkout,
+                  color: Color.fromARGB(255, 245, 146, 69),
+                  size: 30,
+                ),
               ),
             ],
           ),
@@ -46,33 +88,103 @@ class _ShopState extends State<Shop> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const DogSpaBanner(),
+                const SizedBox(height: 20),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[100],
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: TextField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Search pet products...',
-                      prefixIcon: const Icon(
+                      prefixIcon: Icon(
                         Icons.search,
                         color: Color.fromARGB(255, 245, 146, 69),
                       ),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.all(15),
+                      contentPadding: EdgeInsets.all(15),
                     ),
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      setState(() {
+                        searchQuery = value;
+                      });
+                    },
                   ),
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  "Nutrition",
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Nutritions and Dog Foods",
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    PopupMenuButton<SortOption>(
+                      icon: const Icon(
+                        Icons.sort_outlined,
+                        color: Color.fromARGB(255, 245, 146, 69),
+                      ),
+                      onSelected: (SortOption value) {
+                        setState(() {
+                          currentSort = value;
+                        });
+                      },
+                      itemBuilder: (BuildContext context) => [
+                        for (var option in SortOption.values)
+                          PopupMenuItem(
+                            value: option,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  option == SortOption.rating
+                                      ? Icons.star
+                                      : option.toString().contains('price')
+                                          ? Icons.attach_money
+                                          : Icons.sort_by_alpha,
+                                  size: 18,
+                                  color: currentSort == option
+                                      ? const Color.fromARGB(255, 245, 146, 69)
+                                      : Colors.grey,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  getSortText(option),
+                                  style: TextStyle(
+                                    color: currentSort == option
+                                        ? const Color.fromARGB(
+                                            255, 245, 146, 69)
+                                        : Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 20),
+                Wrap(
+                  spacing: 31,
+                  runSpacing: 20,
+                  children: filteredItems.map((item) {
+                    return ShopItemCard(
+                      item: item,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ShopItemDetails(item: item),
+                          ),
+                        );
+                      },
+                    );
+                  }).toList(),
+                ),
               ],
             ),
           ),

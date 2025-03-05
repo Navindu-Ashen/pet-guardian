@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pet_guardian/provider/cart_provider.dart';
 import 'package:pet_guardian/provider/user_provider.dart';
 import 'package:pet_guardian/screens/authentication/login.dart';
 import 'package:pet_guardian/screens/bottom_nav_bar.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => CartProvider()),
       ],
       child: MaterialApp(
         title: 'Pet Guardian',
