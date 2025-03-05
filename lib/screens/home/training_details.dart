@@ -1,0 +1,209 @@
+import 'package:flutter/material.dart';
+import 'package:pet_guardian/models/training.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+class TrainingDetails extends StatefulWidget {
+  final TrainingData trainingData;
+
+  const TrainingDetails({super.key, required this.trainingData});
+
+  @override
+  State<TrainingDetails> createState() => _TrainingDetailsState();
+}
+
+class _TrainingDetailsState extends State<TrainingDetails> {
+  late YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    final videoID = YoutubePlayer.convertUrlToId(widget.trainingData.videoUrl);
+    _controller = YoutubePlayerController(
+      initialVideoId: videoID!,
+      flags: const YoutubePlayerFlags(
+        autoPlay: false,
+        enableCaption: true,
+        forceHD: true,
+        controlsVisibleAtStart: true,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          Image.asset(
+            widget.trainingData.imagePath,
+            width: double.infinity,
+            height: 350,
+            fit: BoxFit.cover,
+            alignment: Alignment.topCenter,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 245, 146, 69),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.arrow_back_ios),
+                    iconSize: 24,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 330),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        offset: const Offset(0, -5),
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 20),
+                          Text(
+                            widget.trainingData.title,
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 245, 146, 69),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            widget.trainingData.subtitle,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            widget.trainingData.description,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 25),
+                          const Text(
+                            "Video Tutorial",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: YoutubePlayer(
+                              controller: _controller,
+                              showVideoProgressIndicator: true,
+                              progressIndicatorColor:
+                                  const Color.fromARGB(255, 245, 146, 69),
+                            ),
+                          ),
+                          const SizedBox(height: 25),
+                          const Text(
+                            "Basic Commands to Learn:",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          for (var command in widget.trainingData.commands)
+                            _buildCommandStep(command),
+                          const SizedBox(height: 30),
+                          const Text(
+                            "Training Tips:",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          for (var tip in widget.trainingData.tips)
+                            _buildTip(tip),
+                          const SizedBox(height: 30),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCommandStep(String command) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Text(
+        "- $command",
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Color.fromARGB(255, 245, 146, 69),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTip(String tip) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Text(
+        "• $tip",
+        style: const TextStyle(
+          fontSize: 15,
+          color: Colors.black87,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}

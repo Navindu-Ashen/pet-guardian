@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pet_guardian/provider/user_provider.dart';
 import 'package:pet_guardian/screens/authentication/login.dart';
+import 'package:pet_guardian/screens/bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
@@ -30,7 +32,15 @@ class MyApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
-        home: const LoginScreen(),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (ctx, snapshot) {
+            if (snapshot.hasData) {
+              return const BottomNavigationScaffold();
+            }
+            return const LoginScreen();
+          },
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_guardian/provider/user_provider.dart';
+import 'package:pet_guardian/models/user.dart';
 import 'package:provider/provider.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -26,9 +27,52 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     super.dispose();
   }
 
+  Future<void> _handleSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      final userProvider = context.read<UserProvider>();
+      if (userProvider.profileImage == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Please select a profile image',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Color.fromARGB(255, 245, 146, 69),
+          ),
+        );
+        return;
+      }
+
+      context.read<UserProvider>().isLoading = true;
+
+      try {
+        final newUser = User(
+          uid: '',
+          username: _usernameController.text,
+          email: _emailController.text,
+          contactNumber: _aboutController.text,
+          profilePictureURL: '',
+        );
+
+        await userProvider.registerUser(newUser, _passwordController.text);
+
+        Navigator.of(context).pop();
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Registration failed: ${error.toString()}')),
+        );
+      } finally {
+        context.read<UserProvider>().isLoading = false;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -171,6 +215,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
                             }
+                            // Add email format validation
+                            bool emailValid = RegExp(
+                                    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+                                .hasMatch(value);
+                            if (!emailValid) {
+                              return 'Please enter a valid email address';
+                            }
                             return null;
                           },
                         ),
@@ -225,6 +276,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                             ),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your contact number';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _passwordController,
@@ -268,18 +325,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your password';
                             }
+                            if (value.length < 6) {
+                              return 'Password must be at least 6 characters';
+                            }
                             return null;
                           },
                         ),
                         ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              print('Email: ${_emailController.text}');
-                              print('Username: ${_usernameController.text}');
-                              print('About: ${_aboutController.text}');
-                              print('Password: ${_passwordController.text}');
-                            }
-                          },
+                          onPressed:
+                              userProvider.isLoading ? null : _handleSubmit,
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
                             fixedSize: Size(screenSize.width, 58),
@@ -288,11 +342,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
+                            disabledBackgroundColor:
+                                const Color.fromARGB(150, 245, 146, 69),
                           ),
-                          child: const Text(
-                            'Register',
-                            style: TextStyle(fontSize: 16),
-                          ),
+                          child: userProvider.isLoading
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white)
+                              : const Text(
+                                  'Register',
+                                  style: TextStyle(fontSize: 16),
+                                ),
                         ),
                       ],
                     ),
