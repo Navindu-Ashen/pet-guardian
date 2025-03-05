@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_guardian/data/dog_breeds.dart';
-import 'package:pet_guardian/screens/home/dog_breed_details.dart';
+import 'package:pet_guardian/screens/categories/dog_breeds/dog_breed_details.dart';
 
 class DogBreeds extends StatefulWidget {
   const DogBreeds({super.key});

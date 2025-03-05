@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_guardian/data/dog_events.dart';
-import 'package:pet_guardian/screens/home/detailed_dog_events.dart';
+import 'package:pet_guardian/screens/events/detailed_dog_events.dart';
 
 class DogEvents extends StatelessWidget {
   const DogEvents({super.key});

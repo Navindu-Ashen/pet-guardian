@@ -346,8 +346,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 const Color.fromARGB(150, 245, 146, 69),
                           ),
                           child: userProvider.isLoading
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white)
+                              ? SizedBox(
+                                  height: 24,
+                                  width: 24,
+                                  child: const CircularProgressIndicator(
+                                      color: Colors.white),
+                                )
                               : const Text(
                                   'Register',
                                   style: TextStyle(fontSize: 16),

@@ -45,7 +45,6 @@ class FirebaseService {
     try {
       final storagePath = '$basePath/$folderId/images';
 
-      // Generate filename
       final fileExtension = file.path.split('.').last;
       final fileName =
           '$folderId-${DateTime.now().millisecondsSinceEpoch}.$fileExtension';

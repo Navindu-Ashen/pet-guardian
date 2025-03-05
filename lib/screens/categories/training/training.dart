@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_guardian/data/training.dart';
-import 'package:pet_guardian/screens/home/training_details.dart';
+import 'package:pet_guardian/screens/categories/training/training_details.dart';
 import 'package:pet_guardian/widgets/training_card.dart';
 
 class Training extends StatefulWidget {

@@ -122,4 +122,31 @@ class UserProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> getUserData() async {
+    try {
+      isLoading = true;
+      notifyListeners();
+
+      final currentUser = _auth.currentUser;
+      if (currentUser == null) {
+        throw Exception("No user is logged in");
+      }
+
+      final userDoc =
+          await _firebaseService.getDocumentDetails("Users", currentUser.uid);
+
+      if (userDoc.exists) {
+        user = User.fromMap(userDoc);
+      } else {
+        throw Exception("User profile data not found");
+      }
+    } catch (error) {
+      print("Error fetching user data: $error");
+      throw error;
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pet_guardian/screens/bottom_nav_bar.dart';
-import 'package:pet_guardian/screens/home/dog_community.dart';
-import 'package:pet_guardian/screens/home/dog_events.dart';
+import 'package:pet_guardian/provider/user_provider.dart';
+import 'package:pet_guardian/screens/bottom_navigation_scaffold.dart';
+import 'package:pet_guardian/screens/community/dog_community.dart';
+import 'package:pet_guardian/screens/events/dog_events.dart';
 import 'package:pet_guardian/widgets/categories_list.dart';
 import 'package:pet_guardian/widgets/home_card.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,70 +17,83 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final userProvider = context.watch<UserProvider>();
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          title: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Row(
-              children: [
-                ClipOval(
-                  child: Image.asset(
-                    "assets/images.jpeg",
-                    width: 55,
-                    height: 55,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                SizedBox(width: 16),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Hello, Sarah",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      "Good Morning!",
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: IconButton(
-                icon: Icon(Icons.notifications_none),
-                iconSize: 30,
-                onPressed: () {
-                  BottomNavigationScaffold.scaffoldKey.currentState
-                      ?.openEndDrawer();
-                },
-              ),
-            ),
-          ],
-        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
+              spacing: 16,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 32),
+                SizedBox(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        ClipOval(
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/logo_bg.png',
+                            image: userProvider.user?.profilePictureURL ?? "",
+                            width: 55,
+                            height: 55,
+                            fit: BoxFit.cover,
+                            imageErrorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Color.fromARGB(50, 245, 146, 69),
+                                width: 55,
+                                height: 55,
+                                child: Center(
+                                  child: Icon(
+                                    Icons.error,
+                                    color: Color.fromARGB(255, 245, 146, 69),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Hello ${userProvider.user?.username ?? "Not Available"}",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              DateTime.now().hour < 12
+                                  ? "Good Morning!"
+                                  : DateTime.now().hour < 17
+                                      ? "Good Afternoon!"
+                                      : "Good Evening!",
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.notifications_none),
+                      iconSize: 30,
+                      onPressed: () {
+                        BottomNavigationScaffold.scaffoldKey.currentState
+                            ?.openEndDrawer();
+                      },
+                    ),
+                  ],
+                ),
                 Container(
                   height: 160,
                   width: double.infinity,
@@ -141,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 32),
+                SizedBox(),
                 Text(
                   "Categories",
                   style: TextStyle(
@@ -149,9 +164,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 16),
                 CategoriesList(),
-                SizedBox(height: 32),
+                SizedBox(),
                 Text(
                   "Events",
                   style: TextStyle(
@@ -159,7 +173,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 16),
                 HomeCard(
                     title: 'Find and Join Special Events For Your Pets',
                     image: 'assets/dogevents.jpg',
@@ -171,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       );
                     }),
-                SizedBox(height: 32),
+                SizedBox(),
                 Text(
                   "Community",
                   style: TextStyle(
@@ -179,7 +192,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 16),
                 HomeCard(
                     title: 'Connect and Share with Communities',
                     image: 'assets/dogcommunities.jpeg',

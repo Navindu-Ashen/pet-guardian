@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pet_guardian/provider/bottom_navigation_provider.dart';
 import 'package:pet_guardian/provider/user_provider.dart';
 import 'package:pet_guardian/screens/authentication/login.dart';
-import 'package:pet_guardian/screens/bottom_nav_bar.dart';
+import 'package:pet_guardian/screens/bottom_navigation_scaffold.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => BottomNavigationProvider()),
       ],
       child: MaterialApp(
         title: 'Pet Guardian',

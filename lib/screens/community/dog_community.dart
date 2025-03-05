@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_guardian/data/dog_community.dart';
-import 'package:pet_guardian/screens/home/detaild_dog_community.dart';
+import 'package:pet_guardian/screens/community/detaild_dog_community.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class DogCommunity extends StatelessWidget {
