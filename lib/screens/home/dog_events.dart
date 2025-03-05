@@ -22,13 +22,10 @@ class DogEvents extends StatelessWidget {
                 color: const Color.fromARGB(255, 245, 146, 69),
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.white,
-                  size: 20,
-                ),
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+                size: 20,
               ),
             ),
             const Text(

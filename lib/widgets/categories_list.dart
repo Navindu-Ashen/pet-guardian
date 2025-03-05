@@ -33,7 +33,7 @@ class CategoriesList extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 8),
-              Text("Shop"),
+              Text("Pet Shop"),
             ],
           ),
         ),
