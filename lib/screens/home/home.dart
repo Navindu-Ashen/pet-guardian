@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pet_guardian/screens/bottom_nav_bar.dart';
+import 'package:pet_guardian/screens/home/dog_community.dart';
+import 'package:pet_guardian/screens/home/dog_events.dart';
 import 'package:pet_guardian/widgets/categories_list.dart';
 import 'package:pet_guardian/widgets/home_card.dart';
 
@@ -12,55 +15,69 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              children: [
+                ClipOval(
+                  child: Image.asset(
+                    "assets/images.jpeg",
+                    width: 55,
+                    height: 55,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(width: 16),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Hello, Sarah",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      "Good Morning!",
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: IconButton(
+                icon: Icon(Icons.notifications_none),
+                iconSize: 30,
+                onPressed: () {
+                  BottomNavigationScaffold.scaffoldKey.currentState
+                      ?.openEndDrawer();
+                },
+              ),
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        ClipOval(
-                          child: Image.asset(
-                            "assets/images.jpeg",
-                            width: 70,
-                            height: 70,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(width: 16),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Hello, Sarah",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              "Good Morning!",
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Icon(Icons.notifications_none, size: 30),
-                  ],
-                ),
                 SizedBox(height: 32),
                 Container(
                   height: 160,
@@ -115,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
-                              image: AssetImage("assets/images.jpeg"),
+                              image: AssetImage("assets/pets.jpg"),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -145,8 +162,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 16),
                 HomeCard(
                     title: 'Find and Join Special Events For Your Pets',
-                    image: 'assets/images.jpeg',
-                    onPressed: () {}),
+                    image: 'assets/dogevents.jpg',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DogEvents(),
+                        ),
+                      );
+                    }),
                 SizedBox(height: 32),
                 Text(
                   "Community",
@@ -158,8 +182,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 16),
                 HomeCard(
                     title: 'Connect and Share with Communities',
-                    image: 'assets/images.jpeg',
-                    onPressed: () {}),
+                    image: 'assets/dogcommunities.jpeg',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DogCommunity(),
+                        ),
+                      );
+                    }),
+                SizedBox(height: 32),
               ],
             ),
           ),

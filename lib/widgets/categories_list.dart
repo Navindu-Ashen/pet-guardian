@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pet_guardian/screens/home/dog_article.dart';
+import 'package:pet_guardian/screens/home/dog_breeds.dart';
 import 'package:pet_guardian/screens/home/shop.dart';
+import 'package:pet_guardian/screens/home/training.dart';
+import 'package:pet_guardian/screens/home/training_details.dart';
 
 class CategoriesList extends StatelessWidget {
   const CategoriesList({super.key});
@@ -22,7 +26,7 @@ class CategoriesList extends StatelessWidget {
             children: [
               ClipOval(
                 child: Image.asset(
-                  "assets/images.jpeg",
+                  "assets/petshop.jpg",
                   width: 70,
                   height: 70,
                   fit: BoxFit.cover,
@@ -35,13 +39,18 @@ class CategoriesList extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            // Navigate to articles screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DogArticles(),
+              ),
+            );
           },
           child: Column(
             children: [
               ClipOval(
                 child: Image.asset(
-                  "assets/images.jpeg",
+                  "assets/petarticle.jpg",
                   width: 70,
                   height: 70,
                   fit: BoxFit.cover,
@@ -54,13 +63,18 @@ class CategoriesList extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            // Navigate to dog breeds screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DogBreeds(),
+              ),
+            );
           },
           child: Column(
             children: [
               ClipOval(
                 child: Image.asset(
-                  "assets/images.jpeg",
+                  "assets/breeds.jpeg",
                   width: 70,
                   height: 70,
                   fit: BoxFit.cover,
@@ -73,13 +87,18 @@ class CategoriesList extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            // Navigate to training screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Training(),
+              ),
+            );
           },
           child: Column(
             children: [
               ClipOval(
                 child: Image.asset(
-                  "assets/images.jpeg",
+                  "assets/puppy.jpg",
                   width: 70,
                   height: 70,
                   fit: BoxFit.cover,
