@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pet_guardian/screens/home/dog_article.dart';
 import 'package:pet_guardian/screens/home/dog_breeds.dart';
-import 'package:pet_guardian/screens/home/shop.dart';
+import 'package:pet_guardian/screens/home/health_tips.dart';
 import 'package:pet_guardian/screens/home/training.dart';
-import 'package:pet_guardian/screens/home/training_details.dart';
 
 class CategoriesList extends StatelessWidget {
   const CategoriesList({super.key});
@@ -18,7 +17,7 @@ class CategoriesList extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Shop(),
+                builder: (context) => HealthTips(),
               ),
             );
           },
@@ -26,14 +25,14 @@ class CategoriesList extends StatelessWidget {
             children: [
               ClipOval(
                 child: Image.asset(
-                  "assets/petshop.jpg",
+                  "assets/dog diet.jpg",
                   width: 70,
                   height: 70,
                   fit: BoxFit.cover,
                 ),
               ),
               SizedBox(height: 8),
-              Text("Pet Shop"),
+              Text("Health Tips"),
             ],
           ),
         ),
