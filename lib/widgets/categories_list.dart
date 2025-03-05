@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pet_guardian/provider/bottom_navigation_provider.dart';
 import 'package:pet_guardian/screens/categories/articles/dog_article.dart';
 import 'package:pet_guardian/screens/categories/dog_breeds/dog_breeds.dart';
-import 'package:pet_guardian/screens/shop/shop.dart';
+import 'package:pet_guardian/screens/home/health_tips.dart';
 import 'package:pet_guardian/screens/categories/training/training.dart';
-import 'package:pet_guardian/screens/categories/training/training_details.dart';
-import 'package:provider/provider.dart';
 
 class CategoriesList extends StatelessWidget {
   const CategoriesList({super.key});
@@ -17,20 +14,25 @@ class CategoriesList extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            context.read<BottomNavigationProvider>().updateIndex(0);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HealthTips(),
+              ),
+            );
           },
           child: Column(
             children: [
               ClipOval(
                 child: Image.asset(
-                  "assets/petshop.jpg",
+                  "assets/dog diet.jpg",
                   width: 70,
                   height: 70,
                   fit: BoxFit.cover,
                 ),
               ),
               SizedBox(height: 8),
-              Text("Pet Shop"),
+              Text("Health Tips"),
             ],
           ),
         ),
