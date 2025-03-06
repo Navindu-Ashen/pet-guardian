@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_guardian/models/shop_items.dart';
 import 'package:pet_guardian/provider/cart_provider.dart';
-import 'package:pet_guardian/screens/home/cart_screen.dart';
+import 'package:pet_guardian/screens/shop/cart_screen.dart';
 import 'package:provider/provider.dart';
 
 class ShopItemDetails extends StatelessWidget {

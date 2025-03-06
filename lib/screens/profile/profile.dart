@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pet_guardian/data/shop_items.dart';
+import 'package:pet_guardian/models/shop_items.dart';
 import 'package:pet_guardian/provider/bottom_navigation_provider.dart';
 import 'package:pet_guardian/provider/user_provider.dart';
 import 'package:pet_guardian/widgets/product_card.dart';
+import 'package:pet_guardian/widgets/shop_item_card.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -252,18 +255,15 @@ class _ProfileState extends State<Profile> {
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: 4,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 16),
                             itemBuilder: (context, index) {
+                              final shopItem = shopItemsList[index];
+
                               return Padding(
                                 padding: const EdgeInsets.only(right: 24),
-                                child: ProductCard(
-                                  imagePath:
-                                      products[index]['imagePath'] as String,
-                                  title: products[index]['title'] as String,
-                                  description:
-                                      products[index]['description'] as String,
-                                  price: products[index]['price'] as double,
+                                child: ShopItemCard(
+                                  item: shopItem,
                                   onTap: () {},
                                 ),
                               );
@@ -302,18 +302,15 @@ class _ProfileState extends State<Profile> {
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: 1,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 16),
                             itemBuilder: (context, index) {
+                              final shopItem = shopItemsList[index];
+
                               return Padding(
                                 padding: const EdgeInsets.only(right: 24),
-                                child: ProductCard(
-                                  imagePath:
-                                      products[index]['imagePath'] as String,
-                                  title: products[index]['title'] as String,
-                                  description:
-                                      products[index]['description'] as String,
-                                  price: products[index]['price'] as double,
+                                child: ShopItemCard(
+                                  item: shopItem,
                                   onTap: () {},
                                 ),
                               );

@@ -16,7 +16,7 @@ class ShopItemCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 270,
+        height: 318,
         width: 170,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -38,7 +38,7 @@ class ShopItemCard extends StatelessWidget {
                 children: [
                   Image.asset(
                     item.image,
-                    height: 100,
+                    height: 150,
                   ),
                   if (!item.inStock)
                     Positioned(
