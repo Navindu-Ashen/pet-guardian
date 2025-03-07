@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_guardian/models/shop_items.dart';
 import 'package:pet_guardian/provider/cart_provider.dart';
 import 'package:pet_guardian/screens/shop/cart_screen.dart';
+import 'package:pet_guardian/widgets/product_review_section.dart';
 import 'package:provider/provider.dart';
 
 class ShopItemDetails extends StatelessWidget {
@@ -107,7 +108,9 @@ class ShopItemDetails extends StatelessWidget {
                   const SizedBox(height: 24),
                   _buildSection('Description', item.description),
                   _buildSection('Features', null, items: item.features),
-                  _buildNutritionalInfo(item.nutritionalInfo),
+                  _buildNutritionalInfo(item.nutritionalInfo, context),
+                  ProductReviewSection(
+                      productId: item.id, productName: item.title),
                   const SizedBox(height: 24),
                   Row(
                     children: [
@@ -208,7 +211,11 @@ class ShopItemDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildNutritionalInfo(Map<String, String> nutritionalInfo) {
+  Widget _buildNutritionalInfo(
+    Map<String, String> nutritionalInfo,
+    BuildContext context,
+  ) {
+    final screenSize = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -241,11 +248,16 @@ class ShopItemDetails extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    nutrient,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
+                  SizedBox(
+                    width: screenSize.width * 0.3,
+                    child: Text(
+                      nutrient,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ),
                   const SizedBox(height: 4),

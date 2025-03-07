@@ -17,7 +17,7 @@ class ShopItemCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 318,
-        width: 170,
+        width: 155,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),

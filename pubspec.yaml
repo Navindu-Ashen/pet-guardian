@@ -43,10 +43,21 @@ dependencies:
   convex_bottom_bar: ^3.2.0
   youtube_player_flutter: ^9.0.1
   timeago: ^3.1.0
+  flutter_stripe: ^11.4.0
+  dio: ^5.8.0+1
+  flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/foreground.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

@@ -101,16 +101,14 @@ class FirebaseService {
     }
   }
 
-  Future<DocumentReference> updateField({
-    required String collectionName,
-    required String docId,
-    required Map<String, dynamic> fieldData,
-  }) async {
+  Future<DocumentReference> updateField(
+    String collection,
+    User userData,
+    String documentId,
+  ) async {
     try {
-      final docRef =
-          FirebaseFirestore.instance.collection(collectionName).doc(docId);
-
-      await docRef.update(fieldData);
+      final docRef = _db.collection(collection).doc(documentId);
+      await docRef.update(userData.toMap());
       return docRef;
     } catch (e) {
       throw Exception('Failed to upload document: $e');

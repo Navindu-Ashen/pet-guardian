@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_guardian/provider/cart_provider.dart';
+import 'package:pet_guardian/provider/user_provider.dart';
+import 'package:pet_guardian/services/stripe_services.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
@@ -7,6 +9,8 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = context.read<CartProvider>();
+    final userProvider = context.read<UserProvider>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -118,28 +122,35 @@ class CartScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Row(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                IconButton(
-                                  icon: const Icon(Icons.remove_circle_outline),
-                                  onPressed: () => cart.updateQuantity(
-                                    cartItem.item.id,
-                                    cartItem.quantity - 1,
-                                  ),
-                                ),
-                                Text(
-                                  cartItem.quantity.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.add_circle_outline),
-                                  onPressed: () => cart.updateQuantity(
-                                    cartItem.item.id,
-                                    cartItem.quantity + 1,
-                                  ),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(
+                                          Icons.remove_circle_outline),
+                                      onPressed: () => cart.updateQuantity(
+                                        cartItem.item.id,
+                                        cartItem.quantity - 1,
+                                      ),
+                                    ),
+                                    Text(
+                                      cartItem.quantity.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon:
+                                          const Icon(Icons.add_circle_outline),
+                                      onPressed: () => cart.updateQuantity(
+                                        cartItem.item.id,
+                                        cartItem.quantity + 1,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 IconButton(
                                   icon: const Icon(
@@ -195,25 +206,38 @@ class CartScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () {
-                        // Add checkout logic here
+                      onPressed: () async {
+                        userProvider.toggleLoading();
+                        await StripeService.instance.makePayment();
+                        cartProvider.clearCart();
+                        context.read<UserProvider>().toggleLoading();
+                        Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 245, 146, 69),
+                        backgroundColor: context.watch<UserProvider>().isLoading
+                            ? Colors.grey
+                            : const Color.fromARGB(255, 245, 146, 69),
                         minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: const Text(
-                        'Proceed to Checkout',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
+                      child: context.watch<UserProvider>().isLoading
+                          ? SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text(
+                              'Proceed to Checkout',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
                     ),
                   ],
                 ),

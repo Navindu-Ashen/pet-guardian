@@ -9,7 +9,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserProvider extends ChangeNotifier {
   User? user;
+
   File? profileImage;
+  User? updatedUser;
   bool isLoading = false;
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
 
@@ -148,5 +150,65 @@ class UserProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> updateUserDetails({
+    String? username,
+    String? contactNumber,
+    File? newProfileImage,
+  }) async {
+    try {
+      isLoading = true;
+      notifyListeners();
+
+      if (user == null) {
+        throw Exception("No user is logged in");
+      }
+
+      Map<String, dynamic> updatedData = {};
+
+      updatedData['username'] = username;
+      updatedData['contactNumber'] = contactNumber;
+      updatedData['email'] = user!.email;
+
+      final currentUser = _auth.currentUser;
+
+      if (newProfileImage != null) {
+        String profilePictureURL = await _firebaseService.uploadImage(
+          newProfileImage,
+          "Users",
+          currentUser!.uid,
+        );
+        updatedData['profilePictureURL'] = profilePictureURL;
+        profileImage = null;
+      }
+
+      user = User(
+        uid: user!.uid,
+        username: updatedData['username'],
+        email: updatedData['email'],
+        contactNumber: updatedData['contactNumber'],
+        profilePictureURL: updatedData['profilePictureURL'],
+      );
+
+      await _firebaseService.updateField(
+        "Users",
+        user!,
+        user!.uid,
+      );
+
+      print("User details updated successfully");
+    } catch (error) {
+      print("Error updating user details: $error");
+      throw error;
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  void toggleLoading() {
+    isLoading = !isLoading;
+    notifyListeners();
   }
 }

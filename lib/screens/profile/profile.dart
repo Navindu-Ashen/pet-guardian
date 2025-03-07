@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pet_guardian/data/shop_items.dart';
 import 'package:pet_guardian/models/shop_items.dart';
 import 'package:pet_guardian/provider/bottom_navigation_provider.dart';
+import 'package:pet_guardian/provider/cart_provider.dart';
 import 'package:pet_guardian/provider/user_provider.dart';
+import 'package:pet_guardian/screens/shop/cart_screen.dart';
+import 'package:pet_guardian/widgets/edit_profile_dialog.dart';
 import 'package:pet_guardian/widgets/product_card.dart';
 import 'package:pet_guardian/widgets/shop_item_card.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +44,36 @@ class _ProfileState extends State<Profile> {
       'price': 3500.00,
     },
   ];
+
+  void showEditProfileDialog() {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final aboutText =
+        "Lorem ipsum dolor sit amet..."; // Replace with actual user about text
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return EditProfileDialog(
+          user: userProvider.user,
+          aboutText: aboutText,
+          onUpdate: (username, email, phone, about) {
+            // Update user data
+            // This is where you would call a method in your UserProvider to update the user data
+            // Example: userProvider.updateUserProfile(username, email, phone, about);
+
+            // Show success message
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Profile updated successfully'),
+                backgroundColor: Color.fromARGB(255, 245, 146, 69),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -198,7 +231,9 @@ class _ProfileState extends State<Profile> {
                                 width: 8,
                               ),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  showEditProfileDialog();
+                                },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
@@ -285,14 +320,23 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 textAlign: TextAlign.left,
                               ),
-                              Text(
-                                "View cart",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                  color: const Color.fromARGB(255, 0, 0, 0),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (ctx) => CartScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "View cart",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.normal,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                  textAlign: TextAlign.left,
                                 ),
-                                textAlign: TextAlign.left,
                               ),
                             ],
                           ),
@@ -301,11 +345,15 @@ class _ProfileState extends State<Profile> {
                           height: 350,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: 1,
+                            itemCount:
+                                context.watch<CartProvider>().items.length,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 16),
                             itemBuilder: (context, index) {
-                              final shopItem = shopItemsList[index];
+                              final shopItem = context
+                                  .watch<CartProvider>()
+                                  .items[index]
+                                  .item;
 
                               return Padding(
                                 padding: const EdgeInsets.only(right: 24),

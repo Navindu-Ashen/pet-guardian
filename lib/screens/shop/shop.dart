@@ -155,22 +155,27 @@ class _ShopState extends State<Shop> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Wrap(
-                  spacing: 31,
-                  runSpacing: 20,
-                  children: filteredItems.map((item) {
-                    return ShopItemCard(
-                      item: item,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ShopItemDetails(item: item),
-                          ),
-                        );
-                      },
-                    );
-                  }).toList(),
+                SizedBox(
+                  width: double.infinity,
+                  child: Wrap(
+                    spacing: 16,
+                    runSpacing: 16,
+                    alignment: WrapAlignment.spaceBetween,
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    children: filteredItems.map((item) {
+                      return ShopItemCard(
+                        item: item,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ShopItemDetails(item: item),
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
                 ),
               ],
             ),
